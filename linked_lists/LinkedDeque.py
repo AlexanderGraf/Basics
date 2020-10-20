@@ -5,6 +5,10 @@
 
 # requires importing DoublyLinkedBase class
 
+class Empty(Exception):
+    """Error attempting to access an element from an empty container"""
+    pass
+
 class LinkedDeque(DoublyLinkedBase):
     """Double-ended queue implementation based on a doubly linked list"""
     def __init__(self):

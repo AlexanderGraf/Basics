@@ -3,6 +3,10 @@
 # From Data Structures and Algorithms in Python - Goodrich et al.
 # Chapter 6 - Stacks, Queues and Deques
 
+class Empty(Exception):
+    """Error attempting to access an element from an empty container"""
+    pass
+
 class ArrayQueue():
     """FIFO queue using a Python list in a circular fashion as underlying storage"""
     DEFAULT_CAPACITY = 10 # assumed larger than any queue size needed
@@ -29,9 +33,9 @@ class ArrayQueue():
 
     def dequeue(self):
     	"""Remove and return the first element of the queue"""
-    	if self.is_empty():
-    		raise Empty('queue is empty')
-    	# extract element of interest    	
+        if self.is_empty():
+            raise Empty('queue is empty')
+        # extract element of interest    	
         answer = self._data[self._front] 
         # aid garbage collection
         self._data[self._front] = None 

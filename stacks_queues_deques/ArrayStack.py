@@ -3,6 +3,10 @@
 # From Data Structures and Algorithms in Python - Goodrich et al.
 # Chapter 6 - Stacks, Queues and Deques
 
+class Empty(Exception):
+    """Error attempting to access an element from an empty container"""
+    pass
+
 class ArrayStack():
     """LIFO Stack using a Python list as underlying storage"""
     def __init__(self):

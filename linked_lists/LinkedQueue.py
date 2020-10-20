@@ -3,6 +3,10 @@
 # From Data Structures and Algorithms in Python - Goodrich et al.
 # Chapter 7 - Linked Lists
 
+class Empty(Exception):
+    """Error attempting to access an element from an empty container"""
+    pass
+
 class LinkedQueue():
 	"""FIFO Queue using a singly linked list for storage"""
 	class _Node():
