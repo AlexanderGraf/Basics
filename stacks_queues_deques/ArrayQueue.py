@@ -4,10 +4,10 @@
 # Chapter 6 - Stacks, Queues and Deques
 
 class ArrayQueue():
-	"""FIFO queue using a Python list in a circular fashion as underlying storage"""
-	DEFAULT_CAPACITY = 10 # assumed larger than any queue size needed
+    """FIFO queue using a Python list in a circular fashion as underlying storage"""
+    DEFAULT_CAPACITY = 10 # assumed larger than any queue size needed
 
-	def __init__(self):
+    def __init__(self):
         """Queue constructor"""
         self._data = None*ArrayQueue.DEFAULT_CAPACITY
         self._size = 0
