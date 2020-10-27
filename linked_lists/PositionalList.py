@@ -8,9 +8,9 @@ class Empty(Exception):
     pass
 
 class PositionalList(_DoublyLinkedBase):
-	"""A sequential container of elements allowing positional access"""
+    """A sequential container of elements allowing positional access"""
 
-	class Position():
+    class Position():
         """An abstraction representing the positional location of an element"""
         def __init__(self,container,node):
             self._container = container
@@ -41,7 +41,7 @@ class PositionalList(_DoublyLinkedBase):
     
     def _make_position(self,node):
         """Return position instance for the given node (or None if a sentinel)"""
-        if node is self._header or node is self._trailer
+        if node is self._header or node is self._trailer:
             return None
         else:
             return self.Position(self,node)
@@ -66,11 +66,11 @@ class PositionalList(_DoublyLinkedBase):
         return self._make_position(node._next)        
 
     def __iter__(self):
-    	"""Generate a forward iteration of the elements of the list"""
-    	cursor = self.first()
-    	while cursor is not None:
-    		yield cursor.element()
-    		cursor = self.after(cursor)
+        """Generate a forward iteration of the elements of the list"""
+        cursor = self.first()
+        while cursor is not None:
+            yield cursor.element()
+            cursor = self.after(cursor)
 
     # mutators ---------------
     # override inheritied version to return Position rather than Node
