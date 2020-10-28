@@ -33,11 +33,11 @@ class BinaryTree(Tree):
                 return self.left(parent)
 
     def children(self,p):
-    	"""Generate an iteration of Positions representing p's children"""
-    	if self.left(p) is not None:
-    		yield self.left(p)
-    	if self.right(p) is not None:
-    		yield self.right(p)
+        """Generate an iteration of Positions representing p's children"""
+        if self.left(p) is not None:
+            yield self.left(p)
+        if self.right(p) is not None:
+            yield self.right(p)
 
     def inorder(self):
         """Generate an inorder iteration of positions in the tree"""
