@@ -79,3 +79,19 @@ class Tree():
             p = self.root( )
         # start height2 recursion
         return self._height2(p)
+
+    def breadthfirst(self):
+        """Generate a breadth-first iteration of the positions of the tree"""
+        if not self.is_empty( ):
+            fringe = LinkedQueue( )
+            # known positions not yet yielded
+            fringe.enqueue(self.root( ))
+            # starting with the root
+            while not fringe.is_empty( ):
+                p = fringe.dequeue( )
+                # remove from front of the queue
+                yield p
+                # report this position
+                for c in self.children(p):
+                	# add children to back of queue
+                    fringe.enqueue(c)
