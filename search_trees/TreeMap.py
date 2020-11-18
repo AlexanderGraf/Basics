@@ -45,3 +45,54 @@ class TreeMap(LinkedBinaryTree, MapBase):
             walk = self.right(walk)
         return walk
 
+    # public ------------------------------
+    def first(self):
+        """Return the first position in the tree (or None if empty)"""
+        return self._subtree_first_position(self.root()) if len(self)>0 else None
+
+    def last(self):
+        """Return the last Position in the tree (of None if empty)"""
+        return self._subtree_last_position(self.root()) if len(self)>0 else None
+
+    def before(self,p):
+        """Return the position just before p in the natural order
+        Return None if p is the first position
+        """
+        self._validate(p)   # inherited from LinkedBinaryTree
+        if self.left(p):
+            return self._subtree_last_position(self.left(p))
+        else:
+            # walk upward
+            walk = p
+            above = self.parent(walk)
+            while above is not None and walk == self.left(above):
+                walk = above
+                above = self.parent(walk)
+            return above
+
+    def after(self,p):
+        """Return the position just after p in the natural order
+        Return None if p is the last position
+        """
+        self._validate(p)   # inherited from LinkedBinaryTree
+        if self.right(p):
+            return self._subtree_first_position(self.right(p))
+        else:
+            # walk downward
+            walk = p
+            below = self.parent(walk)
+            while below is not None and walk == self.right(below):
+                walk = below
+                below = self.parent(walk)
+            return below
+
+    def find_position(self,k):
+        """Return position with key k, or else neighbor (or NOne if empty)"""
+        if self.is_empty():
+            return None
+        else:
+            p = self._subtree_search(self.root(),k)
+            self._rebalance_access(p) # hook for balanced tree subclass
+            return p
+
+    def
