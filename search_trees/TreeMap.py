@@ -45,7 +45,47 @@ class TreeMap(LinkedBinaryTree, MapBase):
             walk = self.right(walk)
         return walk
 
-    # public ------------------------------
+    # utilities for balancing -------------
+    def _relink(self,parent, child, make_left_child):
+        """Relink parent node with child node (we allow child to be None)"""
+        if make_left_child:
+            parent._left = child
+        else:
+            parent._right = child
+        if child is not None:
+            child._parent = parent
+
+    def _rotate(self,p):
+        """Rotate position p above it's parent"""
+        x = p._node
+        y = x._parent   # we assume this exists
+        z = y._parent   # grandparent (possibly None)
+        if z is None:
+            self._root = x                  # x becomes the root
+            x._parent = None
+        else:
+            self._relink(z,x,y==z._left)    # x becomes a direct child of z
+        # now rotate x and y, including transfer of middle subtree
+        if x==y._left:
+            self._relink(y,x._right,True)   # x._right ecomes left child of y
+            self._relink(x,y,False)         # y becomes a right child of x
+        else:
+            self._relink(y,x._left,False)   # x._left becomes the right child of y
+            self._relink(x,y,True)          # y becomes child of x
+
+    def _restructure(self,x):
+        """Perform trinode restructure of Position x with parent/grandparent"""
+        y = self.parent(x)
+        z = self.parent(y)
+        if (x==self.right(y)) == (y==self.right(z)):    # match alignments
+            self._rotate(y)                             # single rotation of y
+            return yield                                # y is new subtree root
+        else:                                           # opposite alignments
+            self._rotate(x)                             # double rotation of x
+            self._rotate(x)
+            return x
+
+    # public --------------------------------
     def first(self):
         """Return the first position in the tree (or None if empty)"""
         return self._subtree_first_position(self.root()) if len(self)>0 else None
