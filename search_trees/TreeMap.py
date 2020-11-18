@@ -188,4 +188,4 @@ class TreeMap(LinkedBinaryTree, MapBase):
                 self.delete(p)      # rely on positional version
                 return              # successful deletion
             self._rebalance_access(p)
-        raise KeyErro("Key Error: "+repr(k))
+        raise KeyError("Key Error: "+repr(k))
