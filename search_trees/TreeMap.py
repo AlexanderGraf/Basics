@@ -95,4 +95,97 @@ class TreeMap(LinkedBinaryTree, MapBase):
             self._rebalance_access(p) # hook for balanced tree subclass
             return p
 
-    def
+    def find_min(self):
+        """Return (key,value) pair with minimum key (or None if empty)"""
+        if self.is_empty():
+            return None
+        else:
+            p = self.first()
+            return (p.key(),p.value())
+
+    def find_ge(self,k):
+        """Return (key,value)pair with least key greater than or equal to k
+        Return None if there is no such key"""
+        if self.is_empty()
+            return None
+        else:
+            p = self.find_position(k)   # may not find exact match
+            if p.key() < k:            # p’s key is too small
+                p=self.after(p)
+            return (p.key(), p.value()) if p is not None else None            
+
+    def find_range(self,start,stop):
+        """Iterate all (key,value) pairs such that start <= key < stop
+        If start is None, iteration begins with minimum key of map
+        if stop is None, iteration continues through the maximum key of map"""
+        if not self.is_empty():
+            if start is None:
+                p = self.first()
+            else:
+                # we initialize p with logic similar to find_ge
+                p = self.find_position(start)
+                if p.key() < start:
+                    p = self.after(p)
+                while p is not None and (stop is None or p.key() < stop):
+                    yield (p.key(),p.value())
+                    p = self.after(p)
+
+
+    def __getitem__(self,k):
+        """Return value associated with key k (raise KeyError if not found)"""
+        if self.is_empty():
+            raise KeyError("Key Error : "+repr(k))
+        else:
+            p = self._subtree_search(self.root(),k)
+            self.rebalance_access(p) # hook for balanced subtree class
+            if k !=p.key():
+                raise KeyError("Key Error : "+repr(k))
+            return p.value()
+
+    def __setitem__(self,k,v):
+        """Assign value v to key k, overwriting existing value if present"""
+        if self.is_empty():
+            leaf = self._add_root(self._Item(k,v))
+        else:
+            p = self._subtree_search(self.root(),k)
+            if p.key() == k:
+                p.element()._value = v      # replace existing item's value
+                self._rebalance_access(p)   # hook for balanced tree subclass
+                return
+            else:
+                item = self._Item(k,v)
+                if p.key() < k:
+                    leaf = self._add_right(p,item)  # inheritied from LinkedBinaryTree
+                else:
+                    leaf = self._add_left(p,item)
+            self._rebalance_insert(leaf)
+
+    def __iter__(self):
+        """Generate an iteration of all keys in the map in order"""
+        p = self.first()
+        while p is not None:
+            yield p.key()
+            p=self.after(p)
+
+    def delete(self,p):
+        """Remove the item as a given Position"""
+        self._validate(p)       # inheritied from LinkedBinaryTree
+        if self.left(p) and self.right(p):
+            # p has two children
+            replacement = self._subtree_last_position(self.left(p))
+            self._replace(p,replacement.element()) # from LinkedBinaryTree
+            p = replacement
+        # now p has at most one child
+        parent = self.parent(p)
+        self._delete(p)
+        self._rebalance_delete(parent)  # if root deleted the parent is None
+
+    def __delitem__(self,k):  
+        """Remove item associated with key k (raise KeyError if not found)"""
+        if not self._is_empty():
+            p = self._subtree_search(self.root(),k)
+            if k == p.key():
+                self.delete(p)      # rely on positional version
+                return              # successful deletion
+            self._rebalance_access(p)
+        raise KeyErro("Key Error: "+repr(k))
