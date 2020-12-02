@@ -71,4 +71,25 @@ class RedBlackTreeMap(TreeMap):
 
     def _fix_deficit(self,z,y):
         """Resolve black deficit at z, where y is the root of z's heavier subtree"""
-        
+        if not self._is_red(y):                         # y is black ; will apply case 1 or case 2
+            x = self._get_red_child(y)
+            if x is not None:                           # Case 1 : y is black and has a red child x; do "transfer"
+                old_color = self._is_red(z)
+                middle = self._restructure(x)
+                self._set_color(middle,old_color)       # middle gets old color of z
+                self._set_black(self.left(middle))      # children become black
+                self._set_black(self.right(middle))                  
+            else:                                       # Case 2: y is black, but no red children; recolor as "fusion"
+                self._set_red(y)
+                if self._is_red(z):
+                    self._set_black(z)                  # this resolves the problem
+                elif not self.is_root(z)
+                    self._fix_deficit(self.parent(z),self.sibling(z))   # recur upward
+        else:                                           # Case 3: y is red; rotate misaligned 3-node and repeat
+            self._rotate(y)
+            self._set_black(y)
+            self._set_red(z)
+            if z == self.right(y):
+                self._fix_deficit(z,self.left(z))
+            else:
+                self._fix_deficit(z,self.right(z))
