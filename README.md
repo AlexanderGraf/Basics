@@ -1,2 +1,2 @@
 # Basics
-Collection of basic data structures and algorithms
+Collection of basic data structures and algorithms (practice)
