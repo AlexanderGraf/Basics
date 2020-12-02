@@ -52,4 +52,23 @@ class RedBlackTreeMap(TreeMap):
                     self._set_black(self.left(grand))   # its children become black
                     self._set_black(self.right(grand))
                     self._resolve_red(grand)            # recur at red grandparent
-                    
+
+    # support for deletions --------------------------------
+    def _rebalance_delete(self,p):
+        if len(self)==1:
+            self._set_black(self.root())                # special case : ensure that root is black
+        elif p is not None:
+            n = self.num_children(p)
+            if n == 1:                                  # deficit exists unless child is a red leaf
+                c = next(self.children(p))
+                if not self._is_red_leaf(c):
+                    self._fix_deficit(p,c):
+            elif n==2:                                  # removed black node with red child
+                if self._is_red_leaf(self.left(p)):
+                    self._set_black(self.left(p))
+                else:
+                    self._set_black(self.right(p))
+
+    def _fix_deficit(self,z,y):
+        """Resolve black deficit at z, where y is the root of z's heavier subtree"""
+        
