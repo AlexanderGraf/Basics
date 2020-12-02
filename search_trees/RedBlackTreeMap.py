@@ -31,3 +31,25 @@ class RedBlackTreeMap(TreeMap):
         return None
 
     # supprt for insertions ---------------------------------
+    def _rebalance_insert(self,p):
+        self._resolve_red(p)                            # new node is always red
+
+    def _resolve_red(self,p):
+        if self.is_root(p):
+            self.set_black(p)                           # make root black
+        else:
+            parent = self.parent(p)
+            if self._is_red(parent):                    # double red problem
+                uncle = self.sibling(parent)
+                if not self._is_red(uncle):             # case 1: mishapen 4 node
+                    middle = self._restructure(p)       # do trinode restructuring
+                    self._set_black(middle)             # and then fix the colors
+                    self._set_red(self.left(middle))
+                    self._set_red(self.right(middle))
+                else:                                   # case 2: overfull 5 node
+                    grand = self.parent(parent)
+                    self._set_red(grand)                # grandparent becomes red
+                    self._set_black(self.left(grand))   # its children become black
+                    self._set_black(self.right(grand))
+                    self._resolve_red(grand)            # recur at red grandparent
+                    
