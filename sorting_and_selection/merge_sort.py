@@ -34,3 +34,4 @@ def merge_sort(S):
     # merge results
     S = merge(S1,S2,S)              # merge sorted halves back into S
     return S
+
