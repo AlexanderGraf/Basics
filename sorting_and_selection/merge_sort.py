@@ -4,7 +4,7 @@
 # Chapter 12 - Sorting and Selection
 
 def merge(S1,S2,S):
-    """Merge two sorted Python lists S1 and S2 inthe properly sized list S"""
+    """Merge two sorted Python lists S1 and S2 in the properly sized list S"""
     i=j=0
     while i+j < len(S):
         if j == len(S2) or (i<len(S1) and S1[i]<S2[j]):
@@ -13,7 +13,7 @@ def merge(S1,S2,S):
         else:
             S[i+j]=S2[j]            # copy the jth element of S2 as the next element of S
             j+=1
-    return S
+                                    # no return needed since sort of in place
 
 
 def merge_sort(S):
@@ -32,6 +32,6 @@ def merge_sort(S):
     merge_sort(S2)                  # sort S2
 
     # merge results
-    S = merge(S1,S2,S)              # merge sorted halves back into S
-    return S
+    merge(S1,S2,S)              # merge sorted halves back into S - no return since sort of in-place
+
 
